@@ -1,5 +1,6 @@
 -- class.lua
--- found here: http://lua-users.org/wiki/SimpleLuaClasses
+-- This file is excluded form license terms expressed in README file.
+-- Found here: http://lua-users.org/wiki/SimpleLuaClasses
 -- Compatible with Lua 5.1 (not 5.0).
 function class(base, init)
     local c = {}    -- a new class instance
