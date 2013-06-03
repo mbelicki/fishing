@@ -60,11 +60,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2"
-     inkscape:cx="1252.7388"
-     inkscape:cy="-280.2008"
+     inkscape:zoom="0.5"
+     inkscape:cx="891.62912"
+     inkscape:cy="4.6855637"
      inkscape:document-units="px"
-     inkscape:current-layer="g9199"
+     inkscape:current-layer="layer6"
      showgrid="true"
      inkscape:window-width="1364"
      inkscape:window-height="747"
@@ -3637,7 +3637,7 @@
            sodipodi:nodetypes="cccccc" />
       </g>
       <g
-         transform="matrix(0.90048609,0,0,0.93042655,851.90559,-45.05217)"
+         transform="matrix(0.94492789,0,0,0.93208388,828.36545,-46.885621)"
          id="g9303"
          inkscape:export-filename="/home/mateusz/programming/lua/fishing/assets/lady.png"
          inkscape:export-xdpi="90"

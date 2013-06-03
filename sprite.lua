@@ -32,6 +32,8 @@ function Sprite:init(imageInfo, gridOffset, gridSize, frameCount)
      local h = gridSize.height
      local aW = imageInfo.width
      local aH = imageInfo.height
+     self.width  = w
+     self.height = h
      self.imageInfo = imageInfo
      self.quads = {}
 

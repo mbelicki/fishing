@@ -24,6 +24,7 @@ require 'class'
 require 'gameview'
 require 'interface'
 require 'command'
+require 'character'
 
 -- PlayerGameView implementation:
 
@@ -34,15 +35,12 @@ function PlayerGameView:init()
 
     self.events = {hearingFrom = true, textFrom = true, recivedItem = true}
 
-    local hero = {}
-    hero.x = 0 
-    hero.y = 0
-    hero.id = 'hero'
-    hero.destX   = hero.x
-    hero.destEps = 4
-    hero.width   = 64
-    hero.height  = 128 
-    hero.speed   = 200
+    local heroSprite = Sprite( {name = 'assets/hero.png', width = 256, height = 256}
+                             , {x = 192, y = 128}
+                             , {width = 64, height = 128}
+                             , 1
+                             )
+    local hero = Character(heroSprite)
 
     -- TODO: perhaps extracting this into some kind of camera class might be
     --       helpful
@@ -117,9 +115,9 @@ function PlayerGameView:draw(assets, currentScene)
     currentScene:draw(assets, self.sceneViewTranslation)
     
     love.graphics.setColor(255, 128, 128, 255)
-    local x = self.hero.x - self.hero.width / 2 - self.sceneViewTranslation;
-    local y = self.hero.y - self.hero.height;
-    love.graphics.rectangle("fill", x, y, self.hero.width, self.hero.height)
+    local x = self.hero.x - self.hero.sprite.width / 2 - self.sceneViewTranslation;
+    local y = self.hero.y - self.hero.sprite.height;
+    love.graphics.rectangle("fill", x, y, self.hero.sprite.width, self.hero.sprite.height)
     
     self.interface:draw(assets)
 end

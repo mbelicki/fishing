@@ -28,5 +28,12 @@ require 'sprite'
 
 Character = class()
 
-function Character:init()
+function Character:init(sprite)
+    self.x = 0 
+    self.y = 0
+    self.sprite = sprite
+    self.id = 'hero'
+    self.destX   = self.x
+    self.destEps = 4
+    self.speed   = 200
 end
