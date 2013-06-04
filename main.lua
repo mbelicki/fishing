@@ -47,7 +47,7 @@ function love.update(dt)
 end
 
 function love.draw()
-    playerview:draw(assets, logic.currentScene)
+    playerview:draw(assets, logic)
     
     love.graphics.setColor(255,128,128,255)
     local time = logic.currentScene.time

@@ -24,6 +24,18 @@
 require 'class'
 require 'scene'
 require 'event'
+require 'aigameview'
+
+-- methods only used for testing (TODO: build normal test suite later on)
+
+local function spawnTestCharacters(logic)
+    local spriteImgInfo = {name = 'assets/lady.png', width = 256 + 96, height = 256}
+    local sprite = Sprite( spriteImgInfo, {x = 161, y = 92}
+                         , {width = 96, height = 164}, 1)
+    local oldLady = Character(sprite, nil)
+    local view = AIGameView(oldLady)
+    logic:addView(view)
+end
 
 -- parts of logic directly inaccessible from other modules
 
@@ -46,6 +58,8 @@ function GameLogic:init()
     self.gameViews = {}
     self.registeredCharacters = {}
     self.pendingEvents = {}
+
+    spawnTestCharacters(self)
 end
 
 function GameLogic:update(dt)
@@ -116,6 +130,20 @@ function GameLogic:doSayTo(cmd)
     table.insert(self.pendingEvents, event)
 end
 
+function GameLogic:getVisibleCharacters(sceneId, range)
+    local visible = {}
+    for _, character in pairs(self.registeredCharacters) do
+        if character.sceneId == sceneId then
+            local leftBound  = character.x - character.sprite.width / 2
+            local rightBound = character.x - character.sprite.width / 2
+            if leftBound > range.leftBound or rightBound < range.rightBound then 
+                table.insert(visible, character)
+            end
+        end
+    end
+    return visible
+end
+
 function GameLogic:addView(view)
     local character = view:ownedCharacter()
     if character == nil then 
@@ -128,6 +156,10 @@ function GameLogic:addView(view)
     character.y = self.currentScene.baselineLevel;
     character.x = 200 -- TODO: scene should contain some kind of spawn point
     character.destX = character.x
+    if character.sceneId == nil then
+        character.sceneId = self.currentScene.id   
+    end
+
     table.insert(self.gameViews, view)
 end
 

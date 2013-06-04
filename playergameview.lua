@@ -40,7 +40,7 @@ function PlayerGameView:init()
                              , {width = 64, height = 128}
                              , 1
                              )
-    local hero = Character(heroSprite)
+    local hero = Character(heroSprite, nil)
 
     -- TODO: perhaps extracting this into some kind of camera class might be
     --       helpful
@@ -110,14 +110,25 @@ function PlayerGameView:ownedCharacter()
     return self.hero
 end
 
-function PlayerGameView:draw(assets, currentScene)
-    self:updateSceneViewTranslation(currentScene, assets.screen.width)
-    currentScene:draw(assets, self.sceneViewTranslation)
+function PlayerGameView:draw(assets, logic)
+    self:updateSceneViewTranslation(logic.currentScene, assets.screen.width)
+    logic.currentScene:draw(assets, self.sceneViewTranslation)
     
-    love.graphics.setColor(255, 128, 128, 255)
-    local x = self.hero.x - self.hero.sprite.width / 2 - self.sceneViewTranslation;
-    local y = self.hero.y - self.hero.sprite.height;
-    love.graphics.rectangle("fill", x, y, self.hero.sprite.width, self.hero.sprite.height)
+    local viewRange  = { leftBound  = self.sceneViewTranslation
+                       , rightBound = self.sceneViewTranslation + assets.screen.width
+                       }
+    local characters = logic:getVisibleCharacters(logic.currentScene.id, viewRange)
+    
+    for _, character in pairs(characters) do
+        local x = character.x - character.sprite.width / 2 - self.sceneViewTranslation
+        local y = character.y - character.sprite.height
+        character.sprite:draw(x, y, assets)
+    end
+    
+    --love.graphics.setColor(255, 128, 128, 255)
+    --local x = self.hero.x - self.hero.sprite.width / 2 - self.sceneViewTranslation;
+    --local y = self.hero.y - self.hero.sprite.height;
+    --love.graphics.rectangle("fill", x, y, self.hero.sprite.width, self.hero.sprite.height)
     
     self.interface:draw(assets)
 end

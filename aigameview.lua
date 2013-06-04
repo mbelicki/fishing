@@ -1,4 +1,4 @@
--- character.lua
+-- aigameview.lua
 
 -- Copyright (C) 2013 Mateusz Belicki
 -- 
@@ -21,24 +21,30 @@
 -- IN THE SOFTWARE.
 
 require 'class'
+require 'gameview'
 
-require 'sprite'
+-- GameView abstract class definition:
 
--- Character implementation:
+AIGameView = class(GameView)
 
-Character = class()
-
-function Character:init(sprite, currentSceneId)
-    self.x = 0 
-    self.y = 0
-    self.sprite = sprite
-    self.id = 'hero'
-    self.destX   = self.x
-    self.destEps = 4
-    self.speed   = 200
-    self.sceneId = currentSceneId;
+function AIGameView:init(boundCharacter)
+    self.hero = boundCharacter
 end
 
-function Character:update(dt)
-    self.sprite:update(dt)
+-- @return: Command
+function AIGameView:update(dt, currentScene)
+    return {}
+end
+
+-- @return: collection of event names
+function AIGameView:handledEvents()
+    return {}
+end
+
+function GameView:handle(event)
+end
+
+-- @return: owned Character object
+function AIGameView:ownedCharacter()
+    return self.hero
 end

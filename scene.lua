@@ -31,6 +31,7 @@ Scene = class()
 
 function Scene:init()
     -- set default values
+    self.id            = 'id'
     self.width         = 1366
     self.height        = 600
     self.baselineLevel = 520
@@ -140,16 +141,15 @@ function CreateTestScene()
                         , nearDesc = "actually, I really like the shape"
                         }
 
-    local spriteImgInfo = {name = 'assets/lady.png', width = 256 + 96, height = 256}
-    local sprite = Sprite( spriteImgInfo, {x = 161, y = 92}
-                         , {width = 96, height = 164}, 1)
-
-    scene.hotSpots[3] = { x = 446, y = 350, width = 128, height = 128 
-                        , sprite = sprite
-                        , name = "sign"
-                        , farDesc = "it's a woman, I think"
-                        , nearDesc = "she looks old and tired"
-                        }
+    --local spriteImgInfo = {name = 'assets/lady.png', width = 256 + 96, height = 256}
+    --local sprite = Sprite( spriteImgInfo, {x = 161, y = 92}
+    --                     , {width = 96, height = 164}, 1)
+    --scene.hotSpots[3] = { x = 446, y = 350, width = 128, height = 128 
+    --                    , sprite = sprite
+    --                    , name = "sign"
+    --                    , farDesc = "it's a woman, I think"
+    --                    , nearDesc = "she looks old and tired"
+    --                    }
     
     return scene
 end
