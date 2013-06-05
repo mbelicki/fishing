@@ -21,6 +21,9 @@
 -- IN THE SOFTWARE.
 
 require 'class'
+
+require 'utils'
+require 'command'
 require 'gameview'
 
 -- GameView abstract class definition:
@@ -29,16 +32,24 @@ AIGameView = class(GameView)
 
 function AIGameView:init(boundCharacter)
     self.hero = boundCharacter
+    self.events = {hearingFrom = true, textFrom = true, recivedItem = true}
 end
 
 -- @return: Command
 function AIGameView:update(dt, currentScene)
-    return {}
+    self.hero:update(dt)
+    local commands = {}
+    if self.hero:isMoving() == false then
+        if self.hero.destX ~= 500 then
+            table.insert(commands, cmdGoTo(500))
+        end
+    end
+    return commands
 end
 
 -- @return: collection of event names
 function AIGameView:handledEvents()
-    return {}
+    return self.events
 end
 
 function GameView:handle(event)

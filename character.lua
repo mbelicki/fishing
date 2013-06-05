@@ -39,6 +39,10 @@ function Character:init(sprite, currentSceneId)
     self.sceneId = currentSceneId;
 end
 
+function Character:isMoving()
+    return math.abs(self.x - self.destX) > self.destEps
+end
+
 function Character:update(dt)
     self.sprite:update(dt)
 end

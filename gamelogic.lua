@@ -40,7 +40,7 @@ end
 -- parts of logic directly inaccessible from other modules
 
 local function updateCharacter(character, dt)
-    if math.abs(character.x - character.destX) > character.destEps then
+    if character:isMoving() then
         if character.x > character.destX then
             character.x = character.x - character.speed * dt;
         elseif character.x < character.destX then

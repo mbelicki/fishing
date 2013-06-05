@@ -53,7 +53,8 @@ end
 -- @return: collection of Commands
 function PlayerGameView:update(dt, currentScene)
     local commands = {}
-
+    
+    self.hero:update(dt)
     self.interface:update(dt)
 
     local mouse = {};
