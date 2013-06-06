@@ -32,6 +32,8 @@ local function spawnTestCharacters(logic)
     local spriteImgInfo = {name = 'assets/lady.png', width = 256 + 96, height = 256}
     local sprite = Sprite( spriteImgInfo, {x = 161, y = 92}
                          , {width = 96, height = 164}, 1)
+    local portrait = Sprite( spriteImgInfo, {x = 0, y = 0}
+                           , {width = 179, height = 128}, 1)
     local oldLady = Character(sprite, nil)
     local view = AIGameView(oldLady)
     logic:addView(view)
@@ -124,7 +126,9 @@ function GameLogic:doGoTo(character, destination)
 end
 
 function GameLogic:doSayTo(cmd)
-    local event = evnHearingFrom( cmd.senderId, cmd.receiverId
+    local sender   = self.registeredCharacters[cmd.senderId]
+    local receiver = self.registeredCharacters[cmd.receiverId]
+    local event = evnHearingFrom( sender, receiver
                                 , cmd.text, cmd.role
                                 )
     table.insert(self.pendingEvents, event)

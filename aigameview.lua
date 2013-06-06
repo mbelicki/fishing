@@ -40,8 +40,8 @@ function AIGameView:update(dt, currentScene)
     self.hero:update(dt)
     local commands = {}
     if self.hero:isMoving() == false then
-        if self.hero.destX ~= 500 then
-            table.insert(commands, cmdGoTo(500))
+        if self.hero.destX ~= 550 then
+            table.insert(commands, cmdGoTo(550))
         end
     end
     return commands

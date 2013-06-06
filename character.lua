@@ -28,15 +28,16 @@ require 'sprite'
 
 Character = class()
 
-function Character:init(sprite, currentSceneId)
+function Character:init(sprite, portraitSprite, currentSceneId)
     self.x = 0 
     self.y = 0
-    self.sprite = sprite
     self.id = 'hero'
     self.destX   = self.x
     self.destEps = 4
     self.speed   = 200
-    self.sceneId = currentSceneId;
+    self.sprite   = sprite
+    self.portrait = portraitSprite
+    self.sceneId  = currentSceneId
 end
 
 function Character:isMoving()

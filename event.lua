@@ -37,8 +37,8 @@ end
 
 -- factory functions
 
-function evnHearingFrom(senderId, receiverId, text, role)
-    return Event('hearingFrom', { senderId = senderId, receiverId = receiverId
+function evnHearingFrom(sender, receiver, text, role)
+    return Event('hearingFrom', { sender = sender, receiver = receiver
                                 , text = text, role = role
                                 })
 end

@@ -27,9 +27,10 @@ require 'class'
 
 SpeechPopup = class()
 
-function SpeechPopup:init(text)
+function SpeechPopup:init(text, portraitSprite)
     self.text = text
-    
+    self.portrait = portraitSprite
+
     self.fadePeriod = 0.25
     self.fadeTimer  = self.fadePeriod
     self.fadeMode   = "in"
@@ -95,6 +96,11 @@ function SpeechPopup:draw(assets)
                           , self.fgColor.b , self.fgColor.a * alpha
                           )
     love.graphics.printf(self.text, x, y, self.width, "center")
+
+    if self.portrait ~= nil then
+        love.graphics.setColor(255, 255, 255, 255 * alpha)
+        self.portrait:draw(x - 148, y - 64, assets)
+    end
 end
 
 -- Interface implementation:
@@ -105,8 +111,8 @@ function Interface:init()
     self.speechPopup = nil
 end
 
-function Interface:spawnSpeechPopup(text)
-    self.speechPopup = SpeechPopup(text)
+function Interface:spawnSpeechPopup(text, portrait)
+    self.speechPopup = SpeechPopup(text, portrait)
 end
 
 function Interface:dismissSpeechPopup()

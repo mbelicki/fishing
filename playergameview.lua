@@ -40,7 +40,12 @@ function PlayerGameView:init()
                              , {width = 64, height = 128}
                              , 1
                              )
-    local hero = Character(heroSprite, nil)
+    local heroPortrait = Sprite( {name = 'assets/hero.png', width = 256, height = 256}
+                               , {x = 0, y = 0}
+                               , {width = 179, height = 128}
+                               , 1
+                               )
+    local hero = Character(heroSprite, heroPortrait, nil)
 
     -- TODO: perhaps extracting this into some kind of camera class might be
     --       helpful
@@ -103,7 +108,7 @@ function PlayerGameView:handle(event)
 end
 
 function PlayerGameView:handleHearing(event)
-    self.interface:spawnSpeechPopup(event.text)
+    self.interface:spawnSpeechPopup(event.text, event.sender.portrait)
 end
 
 -- @return: owned Character object
