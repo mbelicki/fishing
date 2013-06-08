@@ -34,7 +34,7 @@ local function spawnTestCharacters(logic)
                          , {width = 96, height = 164}, 1)
     local portrait = Sprite( spriteImgInfo, {x = 0, y = 0}
                            , {width = 179, height = 128}, 1)
-    local oldLady = Character(sprite, nil)
+    local oldLady = Character(sprite, portrait)
     local view = AIGameView(oldLady)
     logic:addView(view)
 end
@@ -65,7 +65,7 @@ function GameLogic:init()
 end
 
 function GameLogic:update(dt)
-    local events = self.currentScene:update(dt)
+    local events = self.currentScene:update(dt, self)
     for _, value in pairs(events) do
         table.insert(self.pendingEvents, value)
     end
@@ -144,6 +144,10 @@ function GameLogic:getVisibleCharacters(sceneId, range)
         end
     end
     return visible
+end
+
+function GameLogic:issueEvent(event)
+    table.insert(self.pendingEvents, event)
 end
 
 function GameLogic:addView(view)

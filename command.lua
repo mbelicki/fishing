@@ -42,7 +42,15 @@ end
 function cmdSayTo(senderId, receiverId, text, role)
     -- TODO: validate role here?
     return Command('sayto', { senderId = senderId, receiverId = receiverId
-                            , text = text, role = role})
+                            , text = text, role = role
+                            })
+end
+
+-- TODO: perhaps this should be an event issiued by sender
+function cmdAck(senderId, receiverId, eventType)
+    return Command('ack', { senderId = senderId, receiverId = receiverId
+                          , eventType = eventType
+                          })
 end
 
 function cmdTryPickUp(itemId)

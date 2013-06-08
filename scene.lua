@@ -56,13 +56,19 @@ function Scene:hotSpotAt(point)
     return nil
 end
 
-function Scene:update(dt)
+function Scene:update(dt, logic)
     local events = {}
+    local previousHour = math.floor(self.time)
     self.time = getCurrentTime();
     -- self.time = self.time + dt
     -- if self.time > 24 then
     --     self.time = 0
     -- end
+    local currentHour = math.floor(self.time)
+    if previousHour ~= currentHour then 
+        logic:issueEvent(evnFullHour(currentHour))
+    end
+    
     for key, hotSpot in pairs(self.hotSpots) do
         local sprite = hotSpot.sprite
         if sprite ~= nil then

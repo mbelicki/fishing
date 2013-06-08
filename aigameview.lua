@@ -32,18 +32,24 @@ AIGameView = class(GameView)
 
 function AIGameView:init(boundCharacter)
     self.hero = boundCharacter
-    self.events = {hearingFrom = true, textFrom = true, recivedItem = true}
+    self.events = { hearingFrom = true, textFrom = true, recivedItem = true
+                  , fullHour = true
+                  }
+    self.pendingCommands = {}
 end
 
 -- @return: Command
 function AIGameView:update(dt, currentScene)
     self.hero:update(dt)
-    local commands = {}
+    local commands = self.pendingCommands
+    self.pendingCommands = {}
+
     if self.hero:isMoving() == false then
         if self.hero.destX ~= 550 then
             table.insert(commands, cmdGoTo(550))
         end
     end
+
     return commands
 end
 
@@ -52,7 +58,12 @@ function AIGameView:handledEvents()
     return self.events
 end
 
-function GameView:handle(event)
+function AIGameView:handle(event)
+    -- TODO: obviously this is for testing only
+    if event.kind == 'fullHour' then
+        local cmd = cmdSayTo(self.hero.id, nil, 'it\'s ' .. event.hour, nil)
+        table.insert(self.pendingCommands, cmd)
+    end
 end
 
 -- @return: owned Character object
