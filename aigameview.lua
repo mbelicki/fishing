@@ -25,6 +25,7 @@ require 'class'
 require 'utils'
 require 'command'
 require 'gameview'
+require 'speachengine'
 
 -- GameView abstract class definition:
 
@@ -36,6 +37,12 @@ function AIGameView:init(boundCharacter)
                   , fullHour = true
                   }
     self.pendingCommands = {}
+    -- create generic instance of speach enginge
+    self.speach = SpeachEngine()
+    self.speach:createDefaultPredicates()
+    self.speach:createDefaultGreetingRules()
+
+    self.cachedTime = 0
 end
 
 -- @return: Command
@@ -49,6 +56,8 @@ function AIGameView:update(dt, currentScene)
             table.insert(commands, cmdGoTo(550))
         end
     end
+
+    self.cachedTime = currentScene.time
 
     return commands
 end
@@ -68,10 +77,17 @@ function AIGameView:handle(event)
         log(self.hero.id, 'received message: "'..event.text..'" from: '..sender.id)
         
         if sender.id ~= self.hero.id then
-            local cmd = cmdSayTo(self.hero.id, sender.id, 'hello', 'greeting')
+            local statement = self:getStatement('greeting')
+            local cmd = cmdSayTo(self.hero.id, sender.id, statement[1], statement[2])
             table.insert(self.pendingCommands, cmd)
         end
     end
+end
+
+function AIGameView:getStatement(role)
+    local state = {time = self.cachedTime, requestedRole = role}
+    local statements = self.speach:computeStatements(state)
+    return statements[math.random( #statements)]
 end
 
 -- @return: owned Character object
