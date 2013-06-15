@@ -55,6 +55,18 @@ function PlayerGameView:init()
     self.hero = hero
 end
 
+function PlayerGameView:wasPrimaryReleased()
+    return self.oldPrimaryDown and not self.primaryDown
+end
+
+function PlayerGameView:wasSecondaryReleased()
+    return self.oldSecondaryDown and not self.secondaryDown
+end
+
+function PlayerGameView:wasAnyReleased()
+    return self:wasPrimaryReleased() or self:wasSecondaryReleased()
+end
+
 -- @return: collection of Commands
 function PlayerGameView:update(dt, currentScene)
     local commands = {}
@@ -66,34 +78,36 @@ function PlayerGameView:update(dt, currentScene)
     local translatedMouse = {};
     translatedMouse.x = mouse.x + self.sceneViewTranslation;
     translatedMouse.y = mouse.y;
-  
-    local primaryDown   = love.mouse.isDown('l')
-    local secondaryDown = love.mouse.isDown('r')
+
+    self.oldPrimaryDown   = self.primaryDown  
+    self.oldSecondaryDown = self.secondaryDown  
+    self.primaryDown   = love.mouse.isDown('l')
+    self.secondaryDown = love.mouse.isDown('r')
 
     if self.interface:requiresInteraction() then
-        if primaryDown or secondaryDown then
+        if self:wasAnyReleased() then
             self.interface:dismissSpeechPopup()
         end
     end 
     
-    if secondaryDown then
+    if self:wasSecondaryReleased() then
         table.insert(commands, cmdGoTo(translatedMouse.x))
     end 
     
     local hotSpot   = currentScene:hotSpotAt(translatedMouse)
     local character = currentScene:characterAt(translatedMouse)
     
-    if character ~= nil then
+    if character ~= nil and character.id ~= self.hero.id then
         mouse.kind = 'lips'
-        if primaryDown then
-            local id  = character.id
+        if self:wasPrimaryReleased() then
+            local cid = character.id
             local sid = self.hero.id
-            local cmd = cmdSayTo(sid, id, 'hi there', 'greeting')
+            local cmd = cmdSayTo(sid, cid, 'hi there', 'greeting')
             table.insert(commands, cmd)
         end
     elseif hotSpot ~= nil then
         mouse.kind = 'eye'
-        if primaryDown then
+        if self:wasPrimaryReleased() then
             local id  = self.hero.id
             local cmd = cmdSayTo(id, id, hotSpot.farDesc, 'desc')
             table.insert(commands, cmd)

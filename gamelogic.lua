@@ -127,8 +127,7 @@ end
 
 function GameLogic:doSayTo(cmd)
     local sender   = self.registeredCharacters[cmd.senderId]
-    local receiver = self.registeredCharacters[cmd.receiverId]
-    local event = evnHearingFrom(sender, cmd.text, cmd.role)
+    local event = evnHearingFrom(sender, cmd.receiverId, cmd.text, cmd.role)
     table.insert(self.pendingEvents, event)
 end
 
