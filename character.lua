@@ -41,9 +41,12 @@ function Character:init(sprite, portraitSprite, currentSceneId)
 end
 
 function Character:getRectangle()
-    return { x = self.x, y = self.y
-           , width = self.sprite.width
-           , height = self.sprite.height
+    local w = self.sprite.width
+    local h = self.sprite.height
+    return { x      = self.x - w / 2
+           , y      = self.y - h
+           , width  = w
+           , height = h
            }
 end
 

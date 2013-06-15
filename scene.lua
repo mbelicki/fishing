@@ -29,8 +29,9 @@ require 'sprite'
 
 Scene = class()
 
-function Scene:init()
+function Scene:init(logic)
     -- set default values
+    self.boundLogic    = logic
     self.id            = 'id'
     self.width         = 1366
     self.height        = 600
@@ -54,6 +55,10 @@ function Scene:hotSpotAt(point)
         end
     end
     return nil
+end
+
+function Scene:characterAt(point)
+    return self.boundLogic:characterAt(self.id, point)
 end
 
 function Scene:update(dt, logic)
@@ -128,8 +133,8 @@ end
 
 -- a bunch of factory functions:
 
-function CreateTestScene()
-    local scene = Scene()
+function CreateTestScene(logic)
+    local scene = Scene(logic)
     scene:setImage('assets', 'scene0.png')
     scene.hotSpots[0] = { x = 239, y = 387, width = 53, height = 50
                         , name = "timetable"

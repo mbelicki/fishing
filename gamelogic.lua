@@ -56,7 +56,7 @@ end
 GameLogic = class()
 
 function GameLogic:init()
-    self.currentScene = CreateTestScene()
+    self.currentScene = CreateTestScene(self)
     self.gameViews = {}
     self.registeredCharacters = {}
     self.pendingEvents = {}

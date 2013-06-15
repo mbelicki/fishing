@@ -63,6 +63,14 @@ function AIGameView:handle(event)
     if event.kind == 'fullHour' then
         local cmd = cmdSayTo(self.hero.id, nil, 'it\'s ' .. event.hour, nil)
         table.insert(self.pendingCommands, cmd)
+    elseif event.kind == 'hearingFrom' then
+        local sender = event.sender
+        log(self.hero.id, 'received message: "'..event.text..'" from: '..sender.id)
+        
+        if sender.id ~= self.hero.id then
+            local cmd = cmdSayTo(self.hero.id, sender.id, 'hello', 'greeting')
+            table.insert(self.pendingCommands, cmd)
+        end
     end
 end
 

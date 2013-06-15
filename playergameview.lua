@@ -76,14 +76,22 @@ function PlayerGameView:update(dt, currentScene)
         end
     end 
     
-
     if secondaryDown then
         table.insert(commands, cmdGoTo(translatedMouse.x))
     end 
     
-    local hotSpot = currentScene:hotSpotAt(translatedMouse)
+    local hotSpot   = currentScene:hotSpotAt(translatedMouse)
+    local character = currentScene:characterAt(translatedMouse)
     
-    if hotSpot ~= nil then
+    if character ~= nil then
+        mouse.kind = 'lips'
+        if primaryDown then
+            local id  = character.id
+            local sid = self.hero.id
+            local cmd = cmdSayTo(sid, id, 'hi there', 'greeting')
+            table.insert(commands, cmd)
+        end
+    elseif hotSpot ~= nil then
         mouse.kind = 'eye'
         if primaryDown then
             local id  = self.hero.id
