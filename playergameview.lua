@@ -59,9 +59,6 @@ end
 function PlayerGameView:update(dt, currentScene)
     local commands = {}
     
-    self.hero:update(dt)
-    self.interface:update(dt)
-
     local mouse = {};
     mouse.x = love.mouse.getX();
     mouse.y = love.mouse.getY();
@@ -78,17 +75,27 @@ function PlayerGameView:update(dt, currentScene)
             self.interface:dismissSpeechPopup()
         end
     end 
+    
 
     if secondaryDown then
         table.insert(commands, cmdGoTo(translatedMouse.x))
-    elseif primaryDown then
-        local hotSpot = currentScene:hotSpotAt(translatedMouse)
-        if hotSpot ~= nil then
+    end 
+    
+    local hotSpot = currentScene:hotSpotAt(translatedMouse)
+    
+    if hotSpot ~= nil then
+        mouse.kind = 'eye'
+        if primaryDown then
             local id  = self.hero.id
             local cmd = cmdSayTo(id, id, hotSpot.farDesc, 'desc')
             table.insert(commands, cmd)
         end
+    else
+        mouse.kind = 'arrow'
     end
+
+    self.hero:update(dt)
+    self.interface:update(dt, mouse)
 
     return commands
 end

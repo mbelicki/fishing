@@ -175,3 +175,15 @@ function GameLogic:registerCharacter(character)
     t[character.id] = character
 end
 
+function GameLogic:characterAt(sceneId, point)
+    for _, character in pairs(self.registeredCharacters) do
+        if character.sceneId == sceneId then
+            local rect = character:getRectangle()
+            if isPointInRect(point, rect) then
+                return character
+            end
+        end
+    end
+    return nil
+end
+

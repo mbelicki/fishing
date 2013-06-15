@@ -23,6 +23,49 @@
 
 require 'class'
 
+-- Cursor implementation:
+
+Cursor = class()
+
+function Cursor:init()
+    -- TODO: instancing this class has this purely evil side effect of hiding
+    -- system cursor
+    love.mouse.setVisible(false)
+    self:rebuildQuads()
+end
+
+local cursorTypes = {arrow = 0, lips = 1, eye = 2}
+
+function Cursor:rebuildQuads()
+    local x = 0
+    local y = 0
+    local w = 64
+    local h = 32
+    -- source texture dimmesions:
+    local aW = 64
+    local aH = 192
+    
+    self.quads = {}
+    for name, i in pairs(cursorTypes) do
+        y = 32 * i
+        local quad = love.graphics.newQuad(x, y, w, h, aW, aH)
+        self.quads[name] = quad
+    end
+    self.currentQuad = self.quads['arrow']
+end
+
+function Cursor:change(newType)
+    if cursorTypes[newType] ~= nil then 
+        self.currentQuad = self.quads[newType]
+    end
+end
+
+function Cursor:draw(x, y, assets)
+    local texture = assets:getImage('assets/ui.png')
+    love.graphics.setColor(255, 255, 255, 255)
+    love.graphics.drawq(texture, self.currentQuad, x, y)
+end
+
 -- SpeechPopup implementation:
 
 SpeechPopup = class()
@@ -109,6 +152,7 @@ Interface = class()
 
 function Interface:init()
     self.speechPopup = nil
+    self.cursor = Cursor()
 end
 
 function Interface:spawnSpeechPopup(text, portrait)
@@ -129,17 +173,20 @@ function Interface:requiresInteraction()
     return self.speechPopup ~= nil
 end
 
-function Interface:update(dt)
+function Interface:update(dt, mouseInfo)
     if self.speechPopup ~= nil then
         self.speechPopup:update(dt)
         if self.speechPopup:isInvisible() then
             self.speechPopup = nil
         end
     end
+    self.mouse = mouseInfo
+    self.cursor:change(mouseInfo.kind)
 end
 
 function Interface:draw(assets)
     if self.speechPopup ~= nil then
         self.speechPopup:draw(assets)
     end
+    self.cursor:draw(self.mouse.x, self.mouse.y, assets)
 end

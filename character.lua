@@ -40,6 +40,13 @@ function Character:init(sprite, portraitSprite, currentSceneId)
     self.sceneId  = currentSceneId
 end
 
+function Character:getRectangle()
+    return { x = self.x, y = self.y
+           , width = self.sprite.width
+           , height = self.sprite.height
+           }
+end
+
 function Character:isMoving()
     return math.abs(self.x - self.destX) > self.destEps
 end
