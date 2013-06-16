@@ -25,7 +25,7 @@ require 'class'
 require 'utils'
 require 'command'
 require 'gameview'
-require 'speachengine'
+require 'speechengine'
 
 -- GameView abstract class definition:
 
@@ -38,9 +38,9 @@ function AIGameView:init(boundCharacter)
                   }
     self.pendingCommands = {}
     -- create generic instance of speach enginge
-    self.speach = SpeachEngine()
-    self.speach:createDefaultPredicates()
-    self.speach:createDefaultGreetingRules()
+    self.speech = SpeechEngine()
+    self.speech:createDefaultPredicates()
+    self.speech:createDefaultGreetingRules()
 
     self.cachedTime = 0
 end
@@ -86,7 +86,7 @@ end
 
 function AIGameView:getStatement(role)
     local state = {time = self.cachedTime, requestedRole = role}
-    local statements = self.speach:computeStatements(state)
+    local statements = self.speech:computeStatements(state)
     return statements[math.random( #statements)]
 end
 

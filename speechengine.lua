@@ -24,15 +24,15 @@ require 'class'
 
 -- SpeachEngine implementation:
 
-SpeachEngine = class()
+SpeechEngine = class()
 
-function SpeachEngine:init()
+function SpeechEngine:init()
     self.predicates = {} -- id : predicate
     self.evaluation = {} -- id : bool -- result of evaluated predicates
     self.rules = {} -- [predicate ids] : [text, [tags]]
 end
 
-function SpeachEngine:createDefaultPredicates()
+function SpeechEngine:createDefaultPredicates()
     self.predicates['isDay'] = function (state) 
         return state.time > 6.5 and state.time < 20.5
     end
@@ -54,7 +54,7 @@ function SpeachEngine:createDefaultPredicates()
     end
 end
 
-function SpeachEngine:createDefaultGreetingRules()
+function SpeechEngine:createDefaultGreetingRules()
     self.rules[{'isGreeting', }]              = {"hello", {"greeting", "casual"}}
     self.rules[{'isGreeting', }]              = {"hi", {"greeting", "casual"}}
     self.rules[{'isGreeting', }]              = {"hi there", {"greeting", "casual"}}
@@ -65,7 +65,7 @@ function SpeachEngine:createDefaultGreetingRules()
     self.rules[{'isGreeting', 'isEvening'}]   = {"good evening", {"greeting", "formal"}}
 end
 
-function SpeachEngine:evaluateConditions(conditions, state)
+function SpeechEngine:evaluateConditions(conditions, state)
     for _, predicateId in pairs(conditions) do
         local evaled = self.evaluation[predicateId]
         
@@ -80,7 +80,7 @@ function SpeachEngine:evaluateConditions(conditions, state)
     return true
 end
 
-function SpeachEngine:computeStatements(state)
+function SpeechEngine:computeStatements(state)
     local statements = {}
     self.evaluation = {} -- reset cached predicates evaluation
     for conditions, rule in pairs(self.rules) do
